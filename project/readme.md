@@ -56,7 +56,7 @@ for i in range(3):  # Проход по каждому каналу RGB
 ```
 
 <br/><div align="center" >
-  <img alt="Нормализация гистограмм" src="./assets/high_canny.png" width="700px" />
+  <img alt="Нормализация гистограмм" src="./assets/histogram_matching.png" width="500px" />
 </div><br/>
 
 ### Фильтрация нерелевантных пар
@@ -77,9 +77,6 @@ canny_sum = kornia.filters.canny(img.unsqueeze(0).float(), kernel_size=CANNY_KER
 
 <br/><div align="center" >
   <img alt="Фильтрация изображений" src="./assets/low_canny.png" width="700px" />
-</div><br/>
-
-<br/><div align="center" >
   <img alt="Фильтрация изображений" src="./assets/high_canny.png" width="700px" />
 </div><br/>
 
