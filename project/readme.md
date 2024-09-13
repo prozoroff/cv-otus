@@ -30,6 +30,72 @@
   <img alt="Подготовка данных" src="./assets/dataset.png" width="700px" />
 </div><br/>
 
+### Выравнивание гистограмм
+
+У снимков за разные годы могут быть:
+- разные источники
+- разные настройки
+- разные погодные условия
+В результате снимки, сделанные в один месяц могут выглядеть абсолютно по-разному. Самое малое, что можно сделать - выровнять кривые поканально, чтобы изображения имели близкие цвета, контраст и яркость.
+
+```python
+image2_equalized = np.zeros_like(image2)
+
+for i in range(3):  # Проход по каждому каналу RGB
+    hist1 = cv2.calcHist([image1], [i], None, [256], [0, 256])
+    hist2 = cv2.calcHist([image2], [i], None, [256], [0, 256])
+
+    cdf1 = hist1.cumsum()
+    cdf1 = (cdf1 / cdf1[-1]) * 255
+
+    cdf2 = hist2.cumsum()
+    cdf2 = (cdf2 / cdf2[-1]) * 255
+
+    lut = np.interp(cdf2, cdf1, range(256)).astype(np.uint8)
+    image2_equalized[:,:,i] = cv2.LUT(image2[:,:,i], lut)
+```
+
+<br/><div align="center" >
+  <img alt="Нормализация гистограмм" src="./assets/high_canny.png" width="700px" />
+</div><br/>
+
+### Фильтрация нерелевантных пар
+
+Далее необходимо отфильтровать пары изображений, которые:
+- имеют слишком мало деталей
+- имеют слишком много деталей
+- отличаются слишком сильно
+
+Для поиска первых двух проблем используем пороговые значения для суммы краев полученных с помощью детектора Кэнни.
+
+```python
+factor = 1 / (PATSH_SIZE * PATSH_SIZE)
+canny_sum = kornia.filters.canny(img.unsqueeze(0).float(), kernel_size=CANNY_KERNEL_SIZE)[0].sum() * factor
+```
+
+Примеры изображений со слишком малым и слишком большим количеством деталей:
+
+<br/><div align="center" >
+  <img alt="Фильтрация изображений" src="./assets/low_canny.png" width="700px" />
+</div><br/>
+
+<br/><div align="center" >
+  <img alt="Фильтрация изображений" src="./assets/high_canny.png" width="700px" />
+</div><br/>
+
+Для третьего пункта посчитаем количество пикселей на изображениях, отличающихся больше определенной величины и, опять же, отсечем по порогу.
+
+```python
+factor = 1 / (CHANNELS * PATSH_SIZE * PATSH_SIZE)
+diff_sum = (torch.abs(img_1 - img_2) > DIFF_THRESHOLD).sum().item() * factor
+```
+
+Примеры изображений с количеством отличий выше заданного порога:
+
+<br/><div align="center" >
+  <img alt="Фильтрация изображений" src="./assets/large_diff.png" width="700px" />
+</div><br/>
+
 ## UNet-модель
 
 ### Входные данные
