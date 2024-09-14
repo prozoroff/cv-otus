@@ -96,10 +96,47 @@ diff_sum = (torch.abs(img_1 - img_2) > DIFF_THRESHOLD).sum().item() * factor
 
 ## UNet-модель
 
-### Входные данные
+### Формат входных данных
 
 Нарезаем трехканальное изображение 128 на 128 на патчи размером 32 на 32. Получаем входное состояние размером 48x32x32:
 
 <br/><div align="center" >
   <img alt="Подготовка данных" src="./assets/patches.png" width="500px" />
 </div><br/>
+
+### Архитектура модели
+
+Используем решение из библиотеки diffusers а-ля conditioned unet, в качестве условия выступают нарезанные патчи из исходного изображения
+
+<br/><div align="center" >
+  <img alt="Unet модель" src="./assets/unet.png" width="700px" />
+</div><br/>
+
+- DownBlock: [diffusers на github](https://github.com/huggingface/diffusers/blob/main/src/diffusers/models/unets/unet_2d_blocks.py#L1027)
+- UpBlock: [diffusers на github](https://github.com/huggingface/diffusers/blob/main/src/diffusers/models/unets/unet_2d_blocks.py#L2267)
+
+## Super Resolution модель
+
+### Формат входных данных
+
+Используем те же данные, что и для unet, генерируем пары размером 32 на 32 и 128 на 128.
+
+<br/><div align="center" >
+  <img alt="Данные для esrgan" src="./assets/esrgan_data.png" width="500px" />
+</div><br/>
+
+### Архитектура модели
+
+Каноническая из оригинальной статьи: [arxiv](https://arxiv.org/pdf/1809.00219).
+
+<br/><div align="center" >
+  <img alt="Архитектура esrgan" src="./assets/esrgan.png" width="700px" />
+</div><br/>
+
+Задачей являлся лишь выбор числа rrdb-блоков.
+
+<br/><div align="center" >
+  <img alt="RRDB-блоки" src="./assets/rrdb.png" width="700px" />
+</div><br/>
+
+
