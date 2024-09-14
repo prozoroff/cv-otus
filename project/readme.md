@@ -139,4 +139,18 @@ diff_sum = (torch.abs(img_1 - img_2) > DIFF_THRESHOLD).sum().item() * factor
   <img alt="RRDB-блоки" src="./assets/rrdb.png" width="700px" />
 </div><br/>
 
+В оригинальной статье исследуется вариант с 23 RRDB-блоками. В данной работе решено было остановиться на 16 блоках. 
+
+Сравнительные кривые обучения для 1-, 4- и 16-блочной модели:
+
+<br/><div align="center" >
+  <img alt="Кривые обучения" src="./assets/blocks.png" width="500px" />
+</div><br/>
+
+Пример работы 16-блочной модели:
+
+<br/><div align="center" >
+  <img alt="Примеры работы esrgan" src="./assets/16_blocks.png" width="800px" />
+</div><br/>
+
 
