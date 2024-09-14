@@ -112,8 +112,8 @@ diff_sum = (torch.abs(img_1 - img_2) > DIFF_THRESHOLD).sum().item() * factor
   <img alt="Unet модель" src="./assets/unet.png" width="700px" />
 </div><br/>
 
-- DownBlock: [diffusers на github](https://github.com/huggingface/diffusers/blob/main/src/diffusers/models/unets/unet_2d_blocks.py#L1027)
-- UpBlock: [diffusers на github](https://github.com/huggingface/diffusers/blob/main/src/diffusers/models/unets/unet_2d_blocks.py#L2267)
+- Downsample-блок: [diffusers на github](https://github.com/huggingface/diffusers/blob/main/src/diffusers/models/unets/unet_2d_blocks.py#L1027)
+- Upsample-блок: [diffusers на github](https://github.com/huggingface/diffusers/blob/main/src/diffusers/models/unets/unet_2d_blocks.py#L2267)
 
 ## Super Resolution модель
 
@@ -122,7 +122,7 @@ diff_sum = (torch.abs(img_1 - img_2) > DIFF_THRESHOLD).sum().item() * factor
 Используем те же данные, что и для unet, генерируем пары размером 32 на 32 и 128 на 128.
 
 <br/><div align="center" >
-  <img alt="Данные для esrgan" src="./assets/esrgan_data.png" width="500px" />
+  <img alt="Данные для esrgan" src="./assets/esrgan_data.png" width="700px" />
 </div><br/>
 
 ### Архитектура модели
